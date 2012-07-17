@@ -53,6 +53,7 @@ typedef enum ProcessField_ {
    #ifdef HAVE_CGROUP
    CGROUP,
    #endif
+   PRNAME,
    LAST_PROCESSFIELD
 } ProcessField;
 
@@ -147,6 +148,7 @@ typedef struct Process_ {
    #ifdef HAVE_CGROUP
    char* cgroup;
    #endif
+   char prname[16];
 } Process;
 
 

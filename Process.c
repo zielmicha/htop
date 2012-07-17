@@ -73,6 +73,7 @@ typedef enum ProcessField_ {
    #ifdef HAVE_CGROUP
    CGROUP,
    #endif
+   PRNAME,
    LAST_PROCESSFIELD
 } ProcessField;
 
@@ -167,6 +168,7 @@ typedef struct Process_ {
    #ifdef HAVE_CGROUP
    char* cgroup;
    #endif
+   char prname[16];
 } Process;
 
 }*/
@@ -199,6 +201,7 @@ const char *Process_fieldNames[] = {
 #ifdef HAVE_CGROUP
    "CGROUP",
 #endif
+   "PRNAME",
 "*** report bug! ***"
 };
 
@@ -224,6 +227,7 @@ const char *Process_fieldTitles[] = {
 #ifdef HAVE_CGROUP
    "    CGROUP ",
 #endif
+   "     PRNAME     ",
 "*** report bug! ***"
 };
 
@@ -507,6 +511,7 @@ static void Process_writeField(Process* this, RichString* str, ProcessField fiel
    #ifdef HAVE_CGROUP
    case CGROUP: snprintf(buffer, n, "%-10s ", this->cgroup); break;
    #endif
+   case PRNAME: snprintf(buffer, n, "%-16s ", this->prname); break;
 
    default:
       snprintf(buffer, n, "- ");
@@ -729,6 +734,8 @@ int Process_compare(const void* v1, const void* v2) {
    case CGROUP:
       return strcmp(p1->cgroup ? p1->cgroup : "", p2->cgroup ? p2->cgroup : "");
    #endif
+   case PRNAME:
+     return memcmp(p1->prname, p2->prname, 16);
 
    default:
       return (p1->pid - p2->pid);

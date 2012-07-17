@@ -507,6 +507,21 @@ static bool ProcessList_readStatmFile(Process* process, const char* dirname, con
    return (num == 7);
 }
 
+static void ProcessList_readPrname(Process* process, const char* dirname, const char* name) {
+   char filename[MAX_NAME+1];
+   snprintf(filename, MAX_NAME, "%s/%s/status", dirname, name);
+   FILE* file = fopen(filename, "r");
+   if (!file)
+      return false;
+
+   fread(process->prname, 6, 1, file);
+   process->prname[0] = 0;
+   fgets(process->prname, 16, file);
+   if(process->prname[0] != 0)
+     process->prname[strlen(process->prname) - 1] = 0;
+   fclose(file);
+}
+
 #ifdef HAVE_OPENVZ
 
 static void ProcessList_readOpenVZData(Process* process, const char* dirname, const char* name) {
@@ -688,6 +703,8 @@ static bool ProcessList_processEntries(ProcessList* this, const char* dirname, P
             goto errorReadingProcess;
 
          process->user = UsersTable_getRef(this->usersTable, process->st_uid);
+
+         ProcessList_readPrname(process, dirname, name);
 
          #ifdef HAVE_OPENVZ
          ProcessList_readOpenVZData(process, dirname, name);
