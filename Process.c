@@ -511,7 +511,7 @@ static void Process_writeField(Process* this, RichString* str, ProcessField fiel
    #ifdef HAVE_CGROUP
    case CGROUP: snprintf(buffer, n, "%-10s ", this->cgroup); break;
    #endif
-   case PRNAME: snprintf(buffer, n, "%-16s ", this->prname); break;
+   case PRNAME: snprintf(buffer, n, "%-16s", this->prname); break;
 
    default:
       snprintf(buffer, n, "- ");
