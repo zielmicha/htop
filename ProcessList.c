@@ -516,7 +516,7 @@ static void ProcessList_readPrname(Process* process, const char* dirname, const 
 
    fread(process->prname, 6, 1, file);
    process->prname[0] = 0;
-   fgets(process->prname, 16, file);
+   fgets(process->prname, 17, file);
    if(process->prname[0] != 0)
      process->prname[strlen(process->prname) - 1] = 0;
    fclose(file);

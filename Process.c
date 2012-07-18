@@ -168,7 +168,7 @@ typedef struct Process_ {
    #ifdef HAVE_CGROUP
    char* cgroup;
    #endif
-   char prname[16];
+   char prname[20];
 } Process;
 
 }*/
