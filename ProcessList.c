@@ -945,7 +945,7 @@ void ProcessList_rebuildPanel(ProcessList* this, bool flags, int following, bool
 
       if ( (!p->show)
          || (userOnly && (p->st_uid != userId))
-         || (filtering && !(String_contains_i(p->comm, incFilter))) )
+         || (filtering && !(String_matches_i(p->comm, incFilter))) )
          hidden = true;
 
       if (!hidden) {

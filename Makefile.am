@@ -1,5 +1,7 @@
 
 ACLOCAL_AMFLAGS = -I m4
+WITH_PCRE=yes
+LIBS+=-lpcre
 
 bin_PROGRAMS = htop
 dist_man_MANS = htop.1

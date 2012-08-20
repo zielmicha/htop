@@ -42,14 +42,14 @@ Comparison between 'htop' and 'top'
 Compilation instructions
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Run the following (you will probably need shtool, which if you're on Ubuntu should be in your repo)
+You will need shtool, automake, autoconf.
 
-$ libtoolize --force
-$ aclocal
-$ autoheader
-$ automake --force-missing --add-missing
-$ autoconf
-$ ./configure
-$ make
+Just run this line in your console:
+
+$ libtoolize --force ;  aclocal  ; autoheader  ; automake --force-missing --add-missing  ; autoconf ; ./configure ; make
+
+Make sure if you don't have htop already installed from your distro. Uninstall that, and then:
+
 $ sudo make install
+
 

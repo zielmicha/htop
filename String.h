@@ -21,6 +21,15 @@ char** String_split(const char* s, char sep, int* n);
 
 void String_freeArray(char** s);
 
+/*
+  * Returns 1 if   s does not match the regex
+  *         0 if   s matches the regex
+  *
+  */
+
+#define OVECCOUNT 1000
+int String_matches_i(const char* s,const char* regex);
+
 int String_contains_i(const char* s, const char* match);
 
 char* String_getToken(const char* line, const unsigned short int numMatch);
