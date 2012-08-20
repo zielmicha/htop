@@ -42,11 +42,14 @@ Comparison between 'htop' and 'top'
 Compilation instructions
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-This program is distributed as a standard autotools-based package.
-See the INSTALL file for detailed instructions, but you are
-probably used to the common "configure/make/make install" routine.
+Run the following (you will probably need shtool, which if you're on Ubuntu should be in your repo)
 
-See the manual page (man htop) or the on-line help ('F1' or 'h'
-inside htop) for a list of supported key commands.
+$ libtoolize --force
+$ aclocal
+$ autoheader
+$ automake --force-missing --add-missing
+$ autoconf
+$ ./configure
+$ make
+$ sudo make install
 
-if not all keys work check your curses configuration.
