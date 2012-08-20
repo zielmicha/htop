@@ -160,6 +160,8 @@ int String_matches_i(const char* s,const char* regex) {
       return 0;
   };
 
+  pcre_free(re);
+
   return 1;
 }
 
