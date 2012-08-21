@@ -2,6 +2,8 @@
 
 #ifndef HEADER_String
 #define HEADER_String
+
+#include "pcre.h"
 /*
 htop - String.h
 (C) 2004-2011 Hisham H. Muhammad
@@ -22,13 +24,23 @@ char** String_split(const char* s, char sep, int* n);
 void String_freeArray(char** s);
 
 /*
-  * Returns 1 if   s does not match the regex
-  *         0 if   s matches the regex
+  * Returns 0 if   s does not match the regex
+  *         1 if   s matches the regex
+  *
+  * 
+  * Inneficient implementation. A new regex is being created for each match.
+  * I don't have time to implement something better now.
+  * Maybe later I'll go back and store that regex built in this function somewhere and reset
+  * it when it needs to be resetted
+  *
   *
   */
 
 #define OVECCOUNT 1000
-int String_matches_i(const char* s,const char* regex);
+
+pcre* String_to_regex(const char *regex);
+
+int String_matches_i(const char *s,pcre *re);
 
 int String_contains_i(const char* s, const char* match);
 

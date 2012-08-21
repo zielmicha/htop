@@ -939,22 +939,31 @@ void ProcessList_rebuildPanel(ProcessList* this, bool flags, int following, bool
    Panel_prune(this->panel);
    int size = ProcessList_size(this);
    int idx = 0;
-   for (int i = 0; i < size; i++) {
-      bool hidden = false;
-      Process* p = ProcessList_get(this, i);
 
-      if ( (!p->show)
-         || (userOnly && (p->st_uid != userId))
-         || (filtering && !(String_matches_i(p->comm, incFilter))) )
+   pcre *regexFilter = String_to_regex(incFilter);
+
+   if(regexFilter) {
+
+     for (int i = 0; i < size; i++) {
+       bool hidden = false;
+       Process* p = ProcessList_get(this, i);
+
+       if ( (!p->show)
+           || (userOnly && (p->st_uid != userId))
+           || (filtering && !(String_matches_i(p->comm, regexFilter))) )
          hidden = true;
 
-      if (!hidden) {
-         Panel_set(this->panel, idx, (Object*)p);
-         if ((following == -1 && idx == currPos) || (following != -1 && p->pid == currPid)) {
-            Panel_setSelected(this->panel, idx);
-            this->panel->scrollV = currScrollV;
+         if (!hidden) {
+           Panel_set(this->panel, idx, (Object*)p);
+           if ((following == -1 && idx == currPos) || (following != -1 && p->pid == currPid)) {
+             Panel_setSelected(this->panel, idx);
+             this->panel->scrollV = currScrollV;
+           }
+           idx++;
          }
-         idx++;
-      }
-   }
+     };
+
+     pcre_free(regexFilter);
+   };
+
 }

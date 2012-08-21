@@ -97,22 +97,15 @@ void String_freeArray(char** s) {
   * Returns 0 if   s does not match the regex
   *         1 if   s matches the regex
   *
-  * 
-  * Inneficient implementation. A new regex is being created for each match.
-  * I don't have time to implement something better now.
-  * Maybe later I'll go back and store that regex built in this function somewhere and reset
-  * it when it needs to be resetted
-  *
   *
   */
 
 #define OVECCOUNT 1000
-int String_matches_i(const char* s,const char* regex) {
 
+pcre* String_to_regex(const char *regex) {
   pcre *re;
   const char error[1000];
   int   erroffset;
-  int ovector[OVECCOUNT];
 
 
   /*
@@ -128,9 +121,12 @@ int String_matches_i(const char* s,const char* regex) {
                      &erroffset,     /* for error offset */
                      0);             /* use default character tables */
 
-  if(re==NULL) // regex compile failed, handle error case
-    return 0;
+  return re;
+}
 
+
+int String_matches_i(const char *s,pcre *re) {
+  int ovector[OVECCOUNT];
 
   int rc = pcre_exec(
     re,              // the compiled pattern
@@ -142,27 +138,7 @@ int String_matches_i(const char* s,const char* regex) {
     ovector,         // output vector for substring info
     OVECCOUNT);
 
-
-  if(rc<0) // match failed, handle error cases
-  {
-      /*
-       *switch(rc)
-       *{
-       *  case PCRE_ERROR_NOMATCH:
-       *    return 1;
-       *    break;
-       *  default:
-       *    return 1;
-       *    break;
-       *}
-       */
-      pcre_free(re);
-      return 0;
-  };
-
-  pcre_free(re);
-
-  return 1;
+  return rc >= 0;
 }
 
 
