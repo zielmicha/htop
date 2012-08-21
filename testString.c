@@ -13,13 +13,17 @@
 
 
 
-void testMatch(int expected,const char *s,const char *regex) {
+void testMatch(int expected,const char *s,const char *regexStr) {
   char matchChar =  (expected == 0 ? '=' : '!');
 
-  if( String_matches_i(s,regex) != expected ) {
-    printf("[NOT OK] %s %c~ /%s/\n",s,matchChar,regex);
-  } else {
-    printf("[    OK] %s %c~ /%s/\n",s,matchChar,regex);
+  pcre *regex = String_to_regex(regexStr);
+  if(regex) {
+    if( String_matches_i(s,regex) != expected ) {
+      printf("[NOT OK] %s %c~ /%s/\n",s,matchChar,regexStr);
+    } else {
+      printf("[    OK] %s %c~ /%s/\n",s,matchChar,regexStr);
+    };
+    pcre_free(regex);
   };
 };
 
