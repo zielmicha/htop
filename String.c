@@ -8,6 +8,7 @@ in the source distribution for its full text.
 #include "String.h"
 
 #include "config.h"
+#include "pcre.h"
 
 #include <string.h>
 #include <strings.h>
@@ -90,6 +91,56 @@ void String_freeArray(char** s) {
    }
    free(s);
 }
+
+
+/*
+  * Returns 0 if   s does not match the regex
+  *         1 if   s matches the regex
+  *
+  *
+  */
+
+#define OVECCOUNT 1000
+
+pcre* String_to_regex(const char *regex) {
+  pcre *re;
+  const char error[1000];
+  int   erroffset;
+
+
+  /*
+   * // Debug code
+   * FILE *_debug = fopen("/tmp/htop.dbg","a+");
+   * fprintf(_debug,"%s\n%s\n========\n",s,regex);
+   * fclose(_debug);
+   */
+
+  re = pcre_compile (regex,          /* the pattern */
+                     PCRE_MULTILINE,
+                     error,         /* for error message */
+                     &erroffset,     /* for error offset */
+                     0);             /* use default character tables */
+
+  return re;
+}
+
+
+int String_matches_i(const char *s,pcre *re) {
+  int ovector[OVECCOUNT];
+
+  int rc = pcre_exec(
+    re,              // the compiled pattern
+    NULL,                       // no extra data
+    s,          // the buffer
+    strlen(s),   // file length
+    0,                          // start at offset 0 in file_buffer
+    0,                          // default options
+    ovector,         // output vector for substring info
+    OVECCOUNT);
+
+  return rc >= 0;
+}
+
 
 int String_contains_i(const char* s, const char* match) {
    int lens = strlen(s);

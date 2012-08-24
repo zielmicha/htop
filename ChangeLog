@@ -3,6 +3,7 @@ What's new in version 1.0.2
 
 * Avoid deleting .htoprc if it is a symlink
 * BUGFIX: Fix crashes when process list is empty
+* Added regex filters instead of substring filters (still needs some polish)
 
 What's new in version 1.0.1
 
